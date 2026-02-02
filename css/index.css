@@ -1,0 +1,28 @@
+main .container {
+  height: 678px;
+  text-align: center;
+}
+main .container h1 {
+  font-size: 80px;
+  margin: 10px;
+}
+main .container h2 {
+  font-size: 60px;
+  margin: 10px;
+}
+main .container .btn-group {
+  margin-top: 160px;
+}
+main .container .btn-group a {
+  display: inline-block;
+  margin: 20px 10px;
+  padding: 15px 30px;
+  font-size: 20px;
+  color: #fff;
+  background-color: #007bff;
+  border-radius: 10px;
+  text-decoration: none;
+}
+main .container .btn-group a:hover {
+  background-color: #0056b3;
+}

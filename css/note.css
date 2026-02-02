@@ -1,0 +1,22 @@
+main .container {
+  padding: 40px 0;
+}
+main .container table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0 40px 0;
+}
+main .container table tr th,
+main .container table tr td {
+  font-size: 14px;
+  padding: 10px;
+  color: #000;
+}
+main .container table tr th a,
+main .container table tr td a {
+  color: #000;
+}
+main .container table tr th a:hover,
+main .container table tr td a:hover {
+  color: #5887f7;
+}

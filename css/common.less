@@ -1,0 +1,108 @@
+@mainColor: #5887f7;
+@mainColor_hover: #78aaff;
+@mainColor_active: #2a52be;
+
+* {
+  margin: 0;
+  padding: 0;
+  font-family: 'Courier New', Courier, monospace;
+  box-sizing: border-box;
+}
+h1::selection,
+h2::selection,
+h3::selection,
+p::selection,
+a::selection,
+div#time::selection,
+th::selection,
+td::selection {
+  background-color: darkorange;
+  color: white;
+}
+
+// /* 主流手机（375px - 767px） */
+@media screen and (max-width: 767px) {
+  .container {
+    width: 100%;
+  }
+}
+
+// /* 平板竖屏（768px - 991px） */
+@media screen and (min-width: 768px) and (max-width: 991px) {
+  .container {
+    width: 750px;
+  }
+}
+
+// /* 平板横屏/小屏电脑（992px - 1199px） */
+@media screen and (min-width: 992px) and (max-width: 1199px) {
+  .container {
+    width: 950px;
+  }
+}
+
+// /* 大屏电脑（1200px - 1439px） */
+@media screen and (min-width: 1200px) {
+  .container {
+    width: 1200px;
+  }
+}
+
+header {
+  // width: 100%;
+  height: 40px;
+  background-color: @mainColor;
+  .container {
+    margin: 0 auto;
+    background-color: @mainColor;
+    ul:first-child {
+      float: left;
+      display: flex;
+      li {
+        width: 60px;
+        list-style: none;
+        a {
+          display: block;
+          font-size: 12px;
+          line-height: 40px;
+          color: white;
+          text-decoration: none;
+          text-align: center;
+          &:hover {
+            background-color: @mainColor_hover;
+          }
+        }
+        a.active {
+          background-color: @mainColor_active;
+        }
+      }
+    }
+    div#time {
+      float: right;
+      font-size: 12px;
+      line-height: 40px;
+      color: white;
+      text-align: center;
+    }
+  }
+}
+
+main {
+  .container {
+    margin: 0 auto;
+    text-align: center;
+  }
+}
+
+footer {
+  height: 80px;
+  background-color: @mainColor;
+  font-size: 14px;
+  .container {
+    color: #fff;
+    margin: 0 auto;
+    background-color: @mainColor;
+    text-align: center;
+    padding: 30px 0;
+  }
+}
