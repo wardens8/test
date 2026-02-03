@@ -85,9 +85,9 @@ function initTbodyPages(arrays, tbodys) {
     tbodys.insertAdjacentHTML(
       'beforeend',
       `<tr>
-        <td>${index + 1}</td>
-        <td><a href="${mdURL}" target="_blank">${item.check} ${item.name}.md</a></td>
-        <td><a href="${htmlURL}" target="_blank">${item.check} ${item.name}.html</a></td>
+        <td>${index + 1}.${item.check}</td>
+        <td><a href="${mdURL}" target="_blank">${item.name}</a></td>
+        <td><a href="${htmlURL}" target="_blank">${item.name}</a></td>
       </tr>`,
     )
   })
