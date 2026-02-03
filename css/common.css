@@ -1,12 +1,18 @@
 * {
   margin: 0;
   padding: 0;
-  font-family: 'Courier New', Courier, monospace;
   box-sizing: border-box;
+}
+html {
+  background-color: #f8f8f8;
 }
 h1::selection,
 h2::selection,
 h3::selection,
+h4::selection,
+h5::selection,
+h6::selection,
+li::selection,
 p::selection,
 a::selection,
 div#time::selection,
@@ -38,6 +44,10 @@ td::selection {
 header {
   height: 40px;
   background-color: #5887f7;
+  position: sticky;
+  top: 0;
+  left: 0;
+  z-index: 99;
 }
 header .container {
   margin: 0 auto;
@@ -71,6 +81,7 @@ header .container div#time {
   line-height: 40px;
   color: white;
   text-align: center;
+  margin-right: 10px;
 }
 main .container {
   margin: 0 auto;
@@ -86,5 +97,5 @@ footer .container {
   margin: 0 auto;
   background-color: #5887f7;
   text-align: center;
-  padding: 30px 0;
+  padding: 20px 0;
 }

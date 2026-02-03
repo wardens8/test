@@ -86,8 +86,8 @@ function initTbodyPages(arrays, tbodys) {
       'beforeend',
       `<tr>
         <td>${index + 1}</td>
-        <td><a href="${mdURL}" target="_blank">${item.check} ${item.name}</a></td>
-        <td><a href="${htmlURL}" target="_blank">${item.check} ${item.name}</a></td>
+        <td><a href="${mdURL}" target="_blank">${item.check} ${item.name}.md</a></td>
+        <td><a href="${htmlURL}" target="_blank">${item.check} ${item.name}.html</a></td>
       </tr>`,
     )
   })
