@@ -16,3 +16,21 @@ time.innerText = updateAll()
 setInterval(() => {
   time.innerText = updateAll()
 }, 1000)
+
+// 返回顶部按钮
+document.addEventListener('DOMContentLoaded', () => {
+  const backToTop = document.querySelector('.back-to-top')
+  document.addEventListener('scroll', () => {
+    if (document.documentElement.scrollTop > 300) {
+      backToTop.style.opacity = 1
+    } else {
+      backToTop.style.opacity = 0
+    }
+  })
+  backToTop.addEventListener('click', () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    })
+  })
+})
