@@ -26,37 +26,9 @@ td::selection {
   color: white;
 }
 
-// /* 主流手机（375px - 767px） */
-@media screen and (max-width: 767px) {
-  .container {
-    width: 100%;
-  }
-}
-
-// /* 平板竖屏（768px - 991px） */
-@media screen and (min-width: 768px) and (max-width: 991px) {
-  .container {
-    width: 750px;
-  }
-}
-
-// /* 平板横屏/小屏电脑（992px - 1199px） */
-@media screen and (min-width: 992px) and (max-width: 1199px) {
-  .container {
-    width: 950px;
-  }
-}
-
-// /* 大屏电脑（1200px - 1439px） */
-@media screen and (min-width: 1200px) {
-  .container {
-    width: 1200px;
-  }
-}
-
 header {
   // width: 100%;
-  height: 40px;
+  // height: auto;
   background-color: @mainColor;
   position: sticky;
   top: 0;
@@ -65,6 +37,7 @@ header {
   .container {
     margin: 0 auto;
     background-color: @mainColor;
+    overflow: hidden;
     ul:first-child {
       float: left;
       display: flex;
@@ -115,5 +88,33 @@ footer {
     background-color: @mainColor;
     text-align: center;
     padding: 20px 0;
+  }
+}
+
+// /* 主流手机（375px - 767px） */
+@media screen and (max-width: 767px) {
+  .container {
+    width: 100%;
+  }
+}
+
+// /* 平板竖屏（768px - 991px） */
+@media screen and (min-width: 768px) and (max-width: 991px) {
+  .container {
+    width: 750px;
+  }
+}
+
+// /* 平板横屏/小屏电脑（992px - 1199px） */
+@media screen and (min-width: 992px) and (max-width: 1199px) {
+  .container {
+    width: 950px;
+  }
+}
+
+// /* 大屏电脑（1200px - 1439px） */
+@media screen and (min-width: 1200px) {
+  .container {
+    width: 1200px;
   }
 }

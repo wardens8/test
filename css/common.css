@@ -21,28 +21,7 @@ td::selection {
   background-color: darkorange;
   color: white;
 }
-@media screen and (max-width: 767px) {
-  .container {
-    width: 100%;
-  }
-}
-@media screen and (min-width: 768px) and (max-width: 991px) {
-  .container {
-    width: 750px;
-  }
-}
-@media screen and (min-width: 992px) and (max-width: 1199px) {
-  .container {
-    width: 950px;
-  }
-}
-@media screen and (min-width: 1200px) {
-  .container {
-    width: 1200px;
-  }
-}
 header {
-  height: 40px;
   background-color: #5887f7;
   position: sticky;
   top: 0;
@@ -52,6 +31,7 @@ header {
 header .container {
   margin: 0 auto;
   background-color: #5887f7;
+  overflow: hidden;
 }
 header .container ul:first-child {
   float: left;
@@ -98,4 +78,24 @@ footer .container {
   background-color: #5887f7;
   text-align: center;
   padding: 20px 0;
+}
+@media screen and (max-width: 767px) {
+  .container {
+    width: 100%;
+  }
+}
+@media screen and (min-width: 768px) and (max-width: 991px) {
+  .container {
+    width: 750px;
+  }
+}
+@media screen and (min-width: 992px) and (max-width: 1199px) {
+  .container {
+    width: 950px;
+  }
+}
+@media screen and (min-width: 1200px) {
+  .container {
+    width: 1200px;
+  }
 }
