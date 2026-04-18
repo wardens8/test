@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>全能搜索 | 一站式搜索平台</title>
+    <style>
+      /* 基础重置 */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family:
+          'Inter',
+          -apple-system,
+          BlinkMacSystemFont,
+          'PingFang SC',
+          'Microsoft YaHei',
+          sans-serif;
+      }
+
+      :root {
+        --primary: #3b5bdb;
+        --primary-light: #e8edff;
+        --bg: #f8fafd;
+        --surface: #ffffff;
+        --text-primary: #1e293b;
+        --text-secondary: #475569;
+        --border: #e2e8f0;
+        --button: #0084ff;
+        --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+        --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+        --radius: 12px;
+        --radius-full: 999px;
+        --transition: all 0.25s ease;
+      }
+
+      /* 关键修改：全屏居中布局，和Yandex保持一致 */
+      body {
+        background-color: var(--bg);
+        background-image: radial-gradient(circle at 20% 20%, var(--primary-light) 0%, transparent 40%);
+        min-height: 100vh;
+        /* 核心：使用grid实现完全居中 */
+        display: grid;
+        place-items: center;
+        padding: 1rem;
+        color: var(--text-primary);
+      }
+
+      /* 页面容器 - 限制最大宽度，内容居中 */
+      .container {
+        width: 100%;
+        max-width: 800px;
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+        /* 确保容器在视口中垂直居中 */
+        margin: auto;
+      }
+
+      /* 网站标题 */
+      .site-header {
+        text-align: center;
+        margin-bottom: 1rem;
+      }
+
+      .site-title {
+        font-size: 2.5rem;
+        font-weight: 600;
+        background: linear-gradient(135deg, #3b5bdb, #0ca678);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        margin-bottom: 0.5rem;
+      }
+
+      .site-subtitle {
+        color: var(--text-secondary);
+        font-size: 1rem;
+      }
+
+      /* 搜索框区域 */
+      .search-box {
+        background: var(--surface);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow-md);
+        padding: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+      }
+
+      .search-input-container {
+        position: relative;
+        width: 100%;
+      }
+
+      .search-input {
+        width: 100%;
+        padding: 1rem 1.25rem;
+        border: 1px solid var(--border);
+        border-radius: var(--radius-full);
+        font-size: 1rem;
+        outline: none;
+        transition: var(--transition);
+      }
+
+      .search-input:focus {
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(59, 91, 219, 0.1);
+      }
+
+      .search-input::placeholder {
+        color: var(--text-secondary);
+        opacity: 0.7;
+      }
+
+      /* 搜索按钮区域 */
+      .search-buttons {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+        gap: 0.75rem;
+      }
+
+      .search-btn {
+        padding: 0.875rem 1rem;
+        background-color: var(--button);
+        border: none;
+        border-radius: var(--radius);
+        font-size: 0.95rem;
+        font-weight: 500;
+        color: white;
+        cursor: pointer;
+        transition: var(--transition);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+      }
+
+      .search-btn:hover {
+        background-color: var(--primary);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .search-btn:active {
+        transform: translateY(0);
+      }
+
+      /* 页脚 */
+      .footer {
+        margin-top: 2rem;
+        text-align: center;
+        color: var(--text-secondary);
+        font-size: 0.875rem;
+      }
+
+      /* 响应式适配 */
+      @media (max-width: 768px) {
+        .site-title {
+          font-size: 2rem;
+        }
+
+        .search-box {
+          padding: 1rem;
+        }
+
+        .search-buttons {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+
+      @media (max-width: 480px) {
+        .site-title {
+          font-size: 1.75rem;
+        }
+
+        .search-buttons {
+          grid-template-columns: 1fr;
+        }
+
+        .search-input {
+          padding: 0.875rem 1rem;
+        }
+
+        .search-btn {
+          padding: 0.75rem 0.5rem;
+          font-size: 0.9rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <!-- 网站标题 -->
+      <header class="site-header">
+        <h1 class="site-title">全能搜索</h1>
+        <p class="site-subtitle">一站式访问所有主流搜索引擎</p>
+      </header>
+
+      <!-- 搜索区域 -->
+      <div class="search-box">
+        <div class="search-input-container">
+          <input type="text" id="searchInput" class="search-input" placeholder="输入你想搜索的内容..." />
+        </div>
+
+        <!-- 按钮容器（空，由JS动态生成按钮） -->
+        <div class="search-buttons" id="searchButtonsContainer"></div>
+      </div>
+
+      <!-- 页脚 -->
+      <footer class="footer">
+        <p>© 2025 全能搜索 | 简洁高效的搜索体验</p>
+      </footer>
+    </div>
+
+    <script>
+      function initSearch() {
+        // 搜索引擎配置（核心配置，后期维护只需改这里）
+        const searchEngines = [
+          { key: 'bing', name: '必应', url: 'https://cn.bing.com/search?q=' },
+          { key: 'sogou', name: '搜狗', url: 'https://www.sogou.com/web?query=' },
+          { key: '360', name: '360搜索', url: 'https://www.so.com/s?q=' },
+          { key: 'baidu', name: '百度', url: 'https://www.baidu.com/s?wd=' },
+          { key: 'yandex', name: 'Yandex', url: 'https://yandex.com/search/?text=' },
+          { key: 'duckduckgo', name: 'DuckDuckGo', url: 'https://duckduckgo.com/?q=' },
+          { key: 'google', name: '谷歌', url: 'https://www.google.com/search?q=' },
+          { key: 'bilibili', name: '哔哩哔哩', url: 'https://search.bilibili.com/all?keyword=' },
+          { key: 'zhihu', name: '知乎', url: 'https://www.zhihu.com/search?q=' },
+          { key: 'xhs', name: '小红书', url: 'https://www.xiaohongshu.com/search?q=' },
+          { key: 'weibo', name: '微博', url: 'https://s.weibo.com/weibo/?keyword=' },
+          { key: 'tieba', name: '百度贴吧', url: 'https://tieba.baidu.com/f?kw=' },
+          { key: 'douyin', name: '抖音', url: 'https://www.douyin.com/search/' },
+          { key: 'kuaishou', name: '快手', url: 'https://www.kuaishou.com/search/video?searchKey=' },
+          { key: 'douyu', name: '斗鱼', url: 'https://www.douyu.com/search?kw=' },
+          { key: 'huya', name: '虎牙', url: 'https://www.huya.com/search/?kw=' },
+        ]
+        // 获取搜索容器
+        const searchInput = document.getElementById('searchInput')
+        const searchButtonsContainer = document.getElementById('searchButtonsContainer')
+        searchButtonsContainer.innerHTML = ''
+        // 循环生成搜索按钮
+        searchEngines.forEach((engine) => {
+          const button = document.createElement('button')
+          button.className = 'search-btn'
+          button.dataset.engine = engine.key // 存储引擎标识
+          button.innerHTML = `<span>${engine.name}</span>`
+          searchButtonsContainer.appendChild(button)
+        })
+        // 循环绑定点击事件
+        const buttons = searchButtonsContainer.querySelectorAll('.search-btn')
+        buttons.forEach((button) => {
+          button.addEventListener('click', () => {
+            const query = searchInput.value.trim() ? searchInput.value.trim() : ''
+            if (query) {
+              const engine = searchEngines.find((item) => item.key === button.dataset.engine)
+              const url = engine.url + encodeURIComponent(query)
+              window.open(url, '_blank')
+            } else {
+              searchInput.style.backgroundColor = 'var(--primary-light)'
+              setTimeout(() => {
+                searchInput.style.backgroundColor = ''
+              }, 800)
+              searchInput.focus()
+            }
+          })
+        })
+      }
+
+      // 页面加载完成后执行初始化
+      document.addEventListener('DOMContentLoaded', initSearch)
+    </script>
+  </body>
+</html>

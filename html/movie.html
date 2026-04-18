@@ -1,0 +1,657 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>影视书籍推荐榜单</title>
+    <style>
+      /* 全局颜色变量 - 统一管理所有配色 */
+      :root {
+        /* 基础通用色 */
+        --white: #ffffff;
+        --shadow-light: rgba(0, 0, 0, 0.03);
+        --shadow-base: rgba(0, 0, 0, 0.05);
+        --shadow-hover: rgba(0, 0, 0, 0.1);
+        --border-base: #eee;
+        --text-dark: #2d3748;
+
+        /* 分类主题色 - 每个分类统一主色/浅色/边框色 */
+        /* 电影1（豆瓣）- 蓝色系 */
+        --theme-1-primary: #4299e1;
+        --theme-1-light: #e8f4f8;
+        --theme-1-lighter: #f0f8fb;
+        --theme-1-border: #bee3f8;
+        --theme-1-text: #2b6cb0;
+        --theme-1-border-deep: #90cdf4;
+
+        /* 电影2（奥斯卡）- 紫色系 */
+        --theme-2-primary: #805ad5;
+        --theme-2-light: #faf0f5;
+        --theme-2-lighter: #fdf2f8;
+        --theme-2-border: #e9d8fd;
+        --theme-2-text: #7472fe;
+        --theme-2-border-deep: #e9d8fd;
+
+        /* 推荐电影 - 绿色系 */
+        --theme-3-primary: #38b2ac;
+        --theme-3-light: #eaf6fa;
+        --theme-3-lighter: #f5fafe;
+        --theme-3-border: #9ae6b4;
+        --theme-3-text: #2f855a;
+        --theme-3-border-deep: #9ae6b4;
+
+        /* 电视剧 - 橙色系 */
+        --theme-4-primary: #ed8936;
+        --theme-4-light: #fef7fb;
+        --theme-4-lighter: #fcf1f7;
+        --theme-4-border: #fcc367;
+        --theme-4-text: #dd6b20;
+        --theme-4-border-deep: #fcc367;
+
+        /* 书籍 - 红色系 */
+        --theme-5-primary: #e53e3e;
+        --theme-5-light: #fdf2f8;
+        --theme-5-lighter: #fef7fb;
+        --theme-5-border: #fc8181;
+        --theme-5-text: #c53030;
+        --theme-5-border-deep: #fc8181;
+
+        /* 纪录片（预留）- 青色系 */
+        --theme-6-primary: #4299e1;
+        --theme-6-light: #f0f8fb;
+        --theme-6-lighter: #e8f4f8;
+        --theme-6-border: #63b3ed;
+        --theme-6-text: #2c5282;
+        --theme-6-border-deep: #63b3ed;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: '微软雅黑', sans-serif;
+      }
+      body {
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        padding: 20px;
+        min-height: 100vh;
+      }
+      .container {
+        max-width: 1600px;
+        margin: 0 auto;
+        background: var(--white);
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+      }
+      h1 {
+        text-align: center;
+        color: var(--text-dark);
+        margin-bottom: 40px;
+        font-size: 28px;
+        font-weight: 600;
+        position: relative;
+        padding-bottom: 15px;
+      }
+      h1::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80px;
+        height: 3px;
+        background: linear-gradient(90deg, var(--theme-1-primary), var(--theme-3-primary));
+        border-radius: 3px;
+      }
+
+      /* 核心布局 */
+      .rank-container {
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+      }
+      .rank-column {
+        padding: 25px;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px var(--shadow-base);
+        position: relative;
+        overflow: hidden;
+        border: 1px solid;
+        background: linear-gradient(135deg, var(--theme-light) 0%, var(--theme-lighter) 100%);
+      }
+      .rank-title {
+        font-size: 22px;
+        margin: 0 0 20px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid var(--border-base);
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        color: var(--theme-text);
+        border-bottom-color: var(--theme-border-deep);
+      }
+      .rank-title::before {
+        content: '';
+        display: inline-block;
+        width: 6px;
+        height: 20px;
+        border-radius: 3px;
+        margin-right: 10px;
+        background: var(--theme-primary);
+      }
+      .rank-list {
+        list-style: none;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        align-items: flex-start;
+      }
+      .rank-item {
+        display: inline-flex;
+        align-items: center;
+        padding: 12px 18px;
+        border-radius: 8px;
+        justify-content: center;
+        text-align: center;
+        white-space: nowrap;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 4px var(--shadow-light);
+        background: var(--white);
+        border: 1px solid var(--theme-border-deep);
+        color: var(--theme-text);
+      }
+      .rank-item:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px var(--shadow-hover);
+        background: var(--theme-primary);
+        color: var(--white);
+      }
+      .rank-name {
+        transition: all 0.3s ease;
+      }
+
+      /* 分类主题色应用（通过单独类名，替代:nth-child，更易维护） */
+      .theme-1 {
+        --theme-light: var(--theme-1-light);
+        --theme-lighter: var(--theme-1-lighter);
+        --theme-border: var(--theme-1-border);
+        --theme-text: var(--theme-1-text);
+        --theme-border-deep: var(--theme-1-border-deep);
+        --theme-primary: var(--theme-1-primary);
+      }
+      .theme-2 {
+        --theme-light: var(--theme-2-light);
+        --theme-lighter: var(--theme-2-lighter);
+        --theme-border: var(--theme-2-border);
+        --theme-text: var(--theme-2-text);
+        --theme-border-deep: var(--theme-2-border-deep);
+        --theme-primary: var(--theme-2-primary);
+      }
+      .theme-3 {
+        --theme-light: var(--theme-3-light);
+        --theme-lighter: var(--theme-3-lighter);
+        --theme-border: var(--theme-3-border);
+        --theme-text: var(--theme-3-text);
+        --theme-border-deep: var(--theme-3-border-deep);
+        --theme-primary: var(--theme-3-primary);
+      }
+      .theme-4 {
+        --theme-light: var(--theme-4-light);
+        --theme-lighter: var(--theme-4-lighter);
+        --theme-border: var(--theme-4-border);
+        --theme-text: var(--theme-4-text);
+        --theme-border-deep: var(--theme-4-border-deep);
+        --theme-primary: var(--theme-4-primary);
+      }
+      .theme-5 {
+        --theme-light: var(--theme-5-light);
+        --theme-lighter: var(--theme-5-lighter);
+        --theme-border: var(--theme-5-border);
+        --theme-text: var(--theme-5-text);
+        --theme-border-deep: var(--theme-5-border-deep);
+        --theme-primary: var(--theme-5-primary);
+      }
+
+      /* 响应式适配 */
+      @media (max-width: 768px) {
+        .container {
+          padding: 20px;
+        }
+        h1 {
+          font-size: 24px;
+        }
+        .rank-column {
+          padding: 20px;
+        }
+        .rank-title {
+          font-size: 20px;
+        }
+        .rank-item {
+          padding: 10px 15px;
+          font-size: 13px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>影视书籍推荐榜单</h1>
+      <div class="rank-container">
+        <!-- 给每个板块添加对应的theme类名 -->
+        <div class="rank-column theme-1">
+          <h2 class="rank-title">豆瓣TOP250电影</h2>
+          <ul class="rank-list" id="douban-rank"></ul>
+        </div>
+        <div class="rank-column theme-2">
+          <h2 class="rank-title">奥斯卡金像奖最佳动画长片</h2>
+          <ul class="rank-list" id="aosika-rank"></ul>
+        </div>
+        <div class="rank-column theme-3">
+          <h2 class="rank-title">推荐电影</h2>
+          <ul class="rank-list" id="movie-rank"></ul>
+        </div>
+        <div class="rank-column theme-4">
+          <h2 class="rank-title">推荐电视剧</h2>
+          <ul class="rank-list" id="tv-rank"></ul>
+        </div>
+        <div class="rank-column theme-5">
+          <h2 class="rank-title">推荐书籍</h2>
+          <ul class="rank-list" id="book-rank"></ul>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // ===== 只需维护这里的榜单数据 =====
+      const rankData = {
+        douban: [
+          '肖申克的救赎',
+          '霸王别姬',
+          '泰坦尼克号',
+          '阿甘正传',
+          '千与千寻',
+          '美丽人生',
+          '星际穿越',
+          '这个杀手不太冷',
+          '盗梦空间',
+          '楚门的世界',
+          '辛德勒的名单',
+          '忠犬八公的故事',
+          '海上钢琴师',
+          '疯狂动物城',
+          '三傻大闹宝莱坞',
+          '机器人总动员',
+          '放牛班的春天',
+          '无间道',
+          '控方证人',
+          '寻梦环游记',
+          '大话西游之大圣娶亲',
+          '熔炉',
+          '触不可及',
+          '教父',
+          '末代皇帝',
+          '哈利·波特与魔法石',
+          '当幸福来敲门',
+          '龙猫',
+          '活着',
+          '怦然心动',
+          '蝙蝠侠：黑暗骑士',
+          '指环王3：王者无敌',
+          '我不是药神',
+          '乱世佳人',
+          '飞屋环游记',
+          '让子弹飞',
+          '哈尔的移动城堡',
+          '十二怒汉',
+          '海蒂和爷爷',
+          '素媛',
+          '猫鼠游戏',
+          '天空之城',
+          '鬼子来了',
+          '摔跤吧！爸爸',
+          '少年派的奇幻漂流',
+          '钢琴家',
+          '指环王2：双塔奇兵',
+          '死亡诗社',
+          '大话西游之月光宝盒',
+          '绿皮书',
+          '何以为家',
+          '闻香识女人',
+          '大闹天宫',
+          '黑客帝国',
+          '指环王1：护戒使者',
+          '罗马假日',
+          '教父2',
+          '狮子王',
+          '天堂电影院',
+          '饮食男女',
+          '辩护人',
+          '本杰明·巴顿奇事',
+          '搏击俱乐部',
+          '美丽心灵',
+          '穿条纹睡衣的男孩',
+          '情书',
+          '哈利·波特与死亡圣器(下)',
+          '两杆大烟枪',
+          '窃听风暴',
+          '音乐之声',
+          '功夫',
+          '哈利·波特与阿兹卡班的囚徒',
+          '西西里的美丽传说',
+          '阿凡达',
+          '看不见的客人',
+          '拯救大兵瑞恩',
+          '沉默的羔羊',
+          '小鞋子',
+          '布达佩斯大饭店',
+          '蝴蝶效应',
+          '飞越疯人院',
+          '禁闭岛',
+          '还有明天',
+          '心灵捕手',
+          '致命魔术',
+          '低俗小说',
+          '超脱',
+          '哈利·波特与密室',
+          '一一',
+          '喜剧之王',
+          '摩登时代',
+          '杀人回忆',
+          '致命ID',
+          '春光乍泄',
+          '加勒比海盗',
+          '海豚湾',
+          '美国往事',
+          '红辣椒',
+          '七宗罪',
+          '唐伯虎点秋香',
+          '狩猎',
+          '幽灵公主',
+          '甜蜜蜜',
+          '寄生虫',
+          '天书奇谭',
+          '蝙蝠侠：黑暗骑士崛起',
+          '7号房的礼物',
+          '超能陆战队',
+          '第六感',
+          '茶馆',
+          '爱在黎明破晓前',
+          '爱在日落黄昏时',
+          '被嫌弃的松子的一生',
+          '哈利·波特与火焰杯',
+          '头脑特工队',
+          '未麻的部屋',
+          '重庆森林',
+          '借东西的小人阿莉埃蒂',
+          '入殓师',
+          '菊次郎的夏天',
+          '断背山',
+          '剪刀手爱德华',
+          '勇敢的心',
+          '时空恋旅人',
+          '驯龙高手',
+          '消失的爱人',
+          '无人知晓',
+          '倩女幽魂',
+          '傲慢与偏见',
+          '新世界',
+          '花样年华',
+          '玩具总动员3',
+          '一个叫欧维的男人决定去死',
+          '完美的世界',
+          '色，戒',
+          '阳光灿烂的日子',
+          '怪兽电力公司',
+          '小森林 夏秋篇',
+          '天使爱美丽',
+          '教父3',
+          '侧耳倾听',
+          '哪吒闹海',
+          '九品芝麻官',
+          '被解救的姜戈',
+          '请以你的名字呼唤我',
+          '幸福终点站',
+          '釜山行',
+          '神偷奶爸',
+          '小森林 冬春篇',
+          '喜宴',
+          '萤火之森',
+          '告白',
+          '玛丽和麦克斯',
+          '七武士',
+          '头号玩家',
+          '模仿游戏',
+          '惊魂记',
+          '大鱼',
+          '心灵奇旅',
+          '射雕英雄传之东成西就',
+          '血战钢锯岭',
+          '背靠背，脸对脸',
+          '你的名字。',
+          '机器人之梦',
+          '我是山姆',
+          '阳光姐妹淘',
+          '恐怖直播',
+          '黑客帝国3：矩阵革命',
+          '小丑',
+          '末路狂花',
+          '三块广告牌',
+          '谍影重重3',
+          '电锯惊魂',
+          '高山下的花环',
+          '无间道2',
+          '达拉斯买家俱乐部',
+          '疯狂原始人',
+          '绿里奇迹',
+          '爱在午夜降临前',
+          '疯狂的石头',
+          '雨中曲',
+          '2001太空漫游',
+          '海街日记',
+          '风之谷',
+          '上帝之城',
+          '心迷宫',
+          '英雄本色',
+          '记忆碎片',
+          '纵横四海',
+          '无敌破坏王',
+          '卢旺达饭店',
+          '东京教父',
+          '小偷家族',
+          '恐怖游轮',
+          '牯岭街少年杀人事件',
+          '冰川时代',
+          '魔女宅急便',
+          '芙蓉镇',
+          '忠犬八公物语',
+          '岁月神偷',
+          '荒蛮故事',
+          '遗愿清单',
+          '大佛普拉斯',
+          '源代码',
+          '花束般的恋爱',
+          '疯狂的麦克斯4：狂暴之路',
+          '白日梦想家',
+          '可可西里',
+          '你看起来好像很好吃',
+          '贫民窟的百万富翁',
+          '爱乐之城',
+          '波西米亚狂想曲',
+          '城市之光',
+          '爆裂鼓手',
+          '东邪西毒',
+          '青蛇',
+          '哈利·波特与死亡圣器(上)',
+          '无耻混蛋',
+          '终结者2：审判日',
+          '大红灯笼高高挂',
+          '黑天鹅',
+          '新龙门客栈',
+          '初恋这件小事',
+          '人工智能',
+          '千钧一发',
+          '崖上的波妞',
+          '雨人',
+          '虎口脱险',
+          '哈利·波特与凤凰社',
+          '彗星来的那一夜',
+          '罗生门',
+          '海边的曼彻斯特',
+          '恋恋笔记本',
+          '真爱至上',
+          '火星救援',
+          '黑客帝国2：重装上阵',
+          '步履不停',
+          '冰雪奇缘',
+          '奇迹男孩',
+          '千年女优',
+          '战争之王',
+          '谍影重重2',
+          '蜘蛛侠：平行宇宙',
+          '攻壳机动队',
+          '血钻',
+          '小姐',
+          '隐藏人物',
+          '魂断蓝桥',
+          '血观音',
+          '房间',
+        ],
+        aosika: [
+          '第74届（2002年）：怪物史莱克',
+          '第75届（2003年）：千与千寻',
+          '第76届（2004年）：海底总动员',
+          '第77届（2005年）：超人特工队',
+          '第78届（2006年）：超级无敌掌门狗：人兔的诅咒',
+          '第79届（2007年）：快乐的大脚',
+          '第80届（2008年）：美食总动员',
+          '第81届（2009年）：机器人总动员',
+          '第82届（2010年）：飞屋环游记',
+          '第83届（2011年）：玩具总动员3',
+          '第84届（2012年）：兰戈',
+          '第85届（2013年）：勇敢传说',
+          '第86届（2014年）：冰雪奇缘',
+          '第87届（2015年）：超能陆战队',
+          '第88届（2016年）：头脑特工队',
+          '第89届（2017年）：疯狂动物城',
+          '第90届（2018年）：寻梦环游记',
+          '第91届（2019年）：蜘蛛侠：平行宇宙',
+          '第92届（2020年）：玩具总动员4',
+          '第93届（2021年）：心灵奇旅',
+          '第94届（2022年）：魔法满屋',
+          '第95届（2023年）：吉尔莫·德尔·托罗的匹诺曹',
+          '第96届（2024年）：你想活出怎样的人生',
+          '第97届（2025年）：猫猫的奇幻漂流',
+          '第98届（2026年）：K-POP：猎魔女团',
+        ],
+        movie: ['奥本海默', '银河护卫队3', '铃芽之旅', '星际穿越', '流浪地球2', '肖申克的救赎', '控方证人', '霸王别姬', '死亡诗社', '怦然心动', '功夫熊猫'],
+        // 电视剧榜单
+        tv: ['老友记1-10', '生活大爆炸1-12', '风骚律师1-6', '摩登家庭1-11', '权力的游戏1-8', '浴血黑帮1-6', '越狱1-5', '无耻之徒1-11', '绝命毒师1-5', '黄石1-5', '性爱自修室1-4', '破产姐妹1-6', '绝望主妇1-8', '怪奇物语1-4', '斯巴达克斯1-3', '黑袍纠察队1-3', '行尸走肉1-11', '小谢尔顿1-5', '黑吃黑1-4', '汉尼拔1-3'],
+        // 书籍榜单
+        book: [
+          '月亮与六便士——毛姆',
+          '边城——沈从文',
+          '国富论——亚当斯密',
+          '万历十五年——黄仁宇',
+          '天朝的崩溃——茅海建',
+          '霍乱时期的爱情——加西亚·马尔克斯',
+          '三体——刘慈欣',
+          '曾国藩传——萧一山',
+          '天国之秋——裴士锋',
+          '青铜时代/白银时代/黄金时代——王小波',
+          '瓦尔登湖——亨利·戴维·梭罗',
+          '追风筝的人——卡勒德·胡赛尼',
+          '飞鸟集——泰戈尔',
+          '明朝那些事儿——当年明月',
+          '中国通史——吕思勉',
+          '傲慢与偏见——简·奥斯丁',
+          '战争与和平',
+          '简爱',
+          '教父',
+          '丰乳肥臀',
+          '红树林',
+          '时间简史',
+          '替身',
+          '狂人日记',
+          '三个火枪手',
+          '局外人',
+          '活着',
+          '三体全集',
+          '百年孤独',
+          '白夜行',
+          '解忧杂货店',
+          // ------------
+          '沧浪之水',
+          '小镇喧嚣',
+          '权力的黑光',
+          '谈经济学思维与领导干部',
+          '治大国若烹小鲜',
+          '县乡中国',
+          '基层中国',
+          '中国社会各阶层分析',
+          '中国人史纲',
+          '江村经济',
+          '当代中国社会分层',
+          '金翼',
+          '东晋门阀政治',
+          '天朝的崩溃',
+          '置身事内',
+          '党员、党权与党政',
+          '八次危机',
+          '乡土中国',
+          '古代官僚政治研究',
+          '波峰与波谷',
+          '通向奴役之路',
+          '1984',
+          '万历十五年',
+          '翦商',
+          '近代社会的新陈代谢',
+          '国史大纲',
+          '万古江河',
+          '历代政治得失',
+          '帝国之裘',
+          '乌合之众',
+          '最初和最终的自由',
+          '有为而治',
+          '跨越边界的社区',
+          '中国的单位组织',
+          '中国人行动的逻辑',
+          '村落的终结',
+          '银翅',
+          '美好社会与美美与共',
+          '社会变革与婚姻家庭变动',
+        ],
+      }
+
+      // 渲染榜单函数
+      function renderRank(listId, data) {
+        const list = document.getElementById(listId)
+        if (!list) return
+
+        let html = ''
+        data.forEach((name, index) => {
+          html += `
+          <li class="rank-item">
+            <span class="rank-name">${index + 1}. ${name}</span>
+          </li>
+        `
+        })
+        list.innerHTML = html
+      }
+
+      // 初始化页面
+      function init() {
+        renderRank('douban-rank', rankData.douban)
+        renderRank('aosika-rank', rankData.aosika)
+        renderRank('movie-rank', rankData.movie)
+        renderRank('tv-rank', rankData.tv)
+        renderRank('book-rank', rankData.book)
+      }
+
+      document.addEventListener('DOMContentLoaded', init)
+    </script>
+  </body>
+</html>

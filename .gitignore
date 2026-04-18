@@ -1,1 +1,10 @@
-/notes/
+node_modules
+dist/
+
+notes/
+aaa.html
+vue.js
+vue.min.js
+nice.html
+aaa.js
+bbb.js

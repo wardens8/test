@@ -1,83 +1,64 @@
 <!doctype html>
-<html lang="en">
+<html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>主页</title>
+    <title>我的导航</title>
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
-    <link rel="stylesheet" href="./css/common.css" />
-    <link rel="stylesheet" href="./css/index.css" />
-    <script defer src="./js/common.js"></script>
-    <script defer src="./js/index.js"></script>
+    <link rel="stylesheet" href="./index.css" />
+    <script defer src="./index.js"></script>
   </head>
   <body>
-    <!-- 顶部 -->
-    <header>
-      <div class="container">
+    <!-- 左侧导航 - 使用语义化data-target -->
+    <aside class="sidebar">
+      <div class="logo">
+        <div class="logo-image">
+          <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%233b5bdb' stroke-width='1.8'%3E%3Cpath d='M12 2L12 22M12 2L8 6M12 2L16 6M12 22L16 18M12 22L8 18M2 12L22 12M2 12L6 16M2 12L6 8M22 12L18 8M22 12L18 16'/%3E%3Ccircle cx='12' cy='12' r='3' fill='%233b5bdb' fill-opacity='0.2' stroke='%233b5bdb'/%3E%3C/svg%3E" alt="logo" class="logo-img" />
+        </div>
+        <h2>navigate</h2>
+      </div>
+      <nav>
         <ul>
-          <li><a href="./index.html" class="active">首页</a></li>
-          <li><a href="./page.html">导航</a></li>
-          <li><a href="./note.html">笔记</a></li>
+          <li>
+            <a href="#" class="active" data-target="home"><i class="icon icon-home"></i><span>我的主页</span></a>
+          </li>
+          <li>
+            <a href="#" data-target="tools"><i class="icon icon-tools"></i><span>常用工具</span></a>
+          </li>
+          <li>
+            <a href="#" data-target="work"><i class="icon icon-work"></i><span>办公效率</span></a>
+          </li>
+          <li>
+            <a href="#" data-target="fun"><i class="icon icon-fun"></i><span>娱乐休闲</span></a>
+          </li>
+          <li>
+            <a href="#" data-target="news"><i class="icon icon-news"></i><span>新闻资讯</span></a>
+          </li>
+          <li>
+            <a href="#" data-target="study"><i class="icon icon-study"></i><span>学习网站</span></a>
+          </li>
+          <li>
+            <a href="#" data-target="job"><i class="icon icon-job"></i><span>就业信息</span></a>
+          </li>
+          <li>
+            <a href="#" data-target="note"><i class="icon icon-note"></i><span>我的笔记</span></a>
+          </li>
         </ul>
-        <div id="time">00:00:00</div>
-      </div>
-    </header>
-    <!-- 顶部结束 -->
+      </nav>
+    </aside>
 
-    <main>
-      <div class="container">
-        <h1>WELCOME!!</h1>
-        <h2>This is my doshboard!!</h2>
-
-        <div class="btn-group">
-          <h3>你可以点击按钮前往以下地方，也可以从右上角进入</h3>
-          <a href="./center/index.html">个人中心</a>
-          <a href="./navigate/index.html">个人导航</a>
-          <a href="./note/index.html">学习笔记</a>
-          <a href="./link/index.html">联系我</a>
+    <!-- 右侧主内容区 -->
+    <main class="content" id="mainContent">
+      <div class="top-info-bar">
+        <div class="datetime" id="datetime"><span class="date" id="date"></span><span class="time" id="time"></span></div>
+        <div class="weather" id="weather">
+          <span class="weather-icon" id="weatherIcon">晴</span>
+          <span class="weather-temp" id="weatherTemp">--°C</span>
+          <span class="weather-city" id="weatherCity">加载中...</span>
         </div>
-
-        <p style="color: #aaa">其实就是还没想好要干什么😂😂😂</p>
       </div>
+      <!-- 动态内容将注入此容器 -->
+      <div id="dynamic-content"></div>
     </main>
-
-    <footer>
-      <div class="container">
-        <div class="footer-text">
-          <p>
-            本站所有内容及文档仅供个人学习使用，如有侵权，可<u>联系</u>删除，特此声明
-          </p>
-        </div>
-        <div class="footer-text">
-          <p><a href="./link/index.html">联系方式</a></p>
-        </div>
-      </div>
-    </footer>
-
-    <!-- 底部 -->
-    <footer>
-      <div class="container">
-        <p>版权所有 &copy; 2023</p>
-      </div>
-    </footer>
-    <!-- 底部结束 -->
-
-    <!-- 返回顶部 -->
-    <div class="back-to-top">
-      <svg
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          d="M5 15l7-7 7 7"
-        ></path>
-      </svg>
-    </div>
-    <!-- 返回顶部结束 -->
   </body>
 </html>
