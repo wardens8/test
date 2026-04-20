@@ -1,7 +1,11 @@
 node_modules
 dist/
 
-notes/
+notes/design
+notes/FE/资料2
+notes/FE/resource
+notes/python
+
 aaa.html
 vue.js
 vue.min.js
